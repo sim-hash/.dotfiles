@@ -1,0 +1,33 @@
+# Packer compiled file
+plugin/packer_compiled.lua
+
+# Session files
+Session.vim
+*.vim
+
+# Lazy lock file (if you switch to lazy.nvim in future)
+lazy-lock.json
+
+# Undo history
+.undodir/
+
+# Swap files
+*.swp
+*.swo
+*~
+
+# LSP logs
+.lsp.log
+lsp.log
+
+# DAP logs
+.dap.log
+
+# nvim-tree bookmarks
+.nvim-tree-bookmarks
+
+# Mason installed servers (optional - comment out if you want to track them)
+# mason/
+
+# Keybindings reference (personal documentation)
+KEYBINDINGS.md

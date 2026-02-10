@@ -1,0 +1,2 @@
+require("sim-hash")
+
