@@ -1,77 +1,28 @@
-# Pre-Commit Checklist
+# Rust Pre-Commit Checklist
 
-## Quality Gates (MANDATORY)
+> See [global checklist](../../CLAUDE.md) for universal items.
+> This covers Rust-specific checks only.
 
-- [ ] `cargo test` - All tests pass
-- [ ] `cargo build` - Build succeeds
-- [ ] `cargo clippy -- -D warnings` - No clippy warnings
-- [ ] `cargo fmt --check` - Formatting correct
+## Quality Gates
 
 ```bash
 cargo test && cargo build && cargo clippy -- -D warnings && cargo fmt --check
 ```
 
-**All four must pass. No exceptions.**
-
----
-
-## Code Quality
+## Rust-Specific Checks
 
 - [ ] No `.unwrap()` or `.expect()` in production code
-- [ ] Error types are domain-specific (not stringly-typed)
-- [ ] `?` used for error propagation (not manual match-and-return)
+- [ ] No `dbg!()` macros left in
+- [ ] No `#[allow(...)]` without a justifying comment
+- [ ] Error types are domain-specific (use `thiserror`)
+- [ ] `?` used for error propagation
 - [ ] No unnecessary `.clone()` calls
 - [ ] Public items have doc comments
-
----
-
-## Clean Code
-
-- [ ] No `dbg!()` macros left in
-- [ ] No `println!()` debugging left in
-- [ ] No `todo!()` or `unimplemented!()` without a tracking issue
-- [ ] No commented-out code
-- [ ] No `#[allow(...)]` without a justifying comment
-
----
-
-## Tests
-
-- [ ] New behavior has corresponding tests
-- [ ] Tests follow Arrange-Act-Assert pattern
-- [ ] Test names describe behavior, not implementation
-- [ ] Edge cases covered (empty, zero, boundary values)
-- [ ] Error cases have dedicated tests
-
----
-
-## Dependencies
-
-- [ ] No unnecessary new dependencies added
 - [ ] `Cargo.lock` is up to date
-- [ ] `cargo audit` shows no vulnerabilities (if applicable)
 
----
-
-## Commit Message
-
-Follow conventional commits:
-
-```
-feat: add user authentication
-fix: handle empty input in parser
-refactor: extract validation into separate module
-test: add edge case tests for pricing
-docs: update API documentation
-chore: update dependencies
-```
-
----
-
-## Common Mistakes to Watch For
+## Common Rust Mistakes
 
 - `.unwrap()` slipping into production code
 - Forgetting to declare new modules in `mod.rs` / `lib.rs`
-- Dead code warnings (remove unused code, don't just suppress)
+- Dead code warnings (remove unused code, don't suppress)
 - Missing `#[derive(Debug)]` on public types
-- Forgetting to update `Cargo.lock` after dependency changes
