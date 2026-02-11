@@ -182,9 +182,12 @@ chore: update dependencies
 
 ---
 
-## Language-Specific Guides
+## Language Detection
 
-Apply the relevant guide alongside these global rules:
+Automatically apply the relevant language guide based on the project:
 
-- **Rust** → See `rust/` directory
-- **Java** → See `java/` directory (coming soon)
+- **Rust** (detect: `Cargo.toml` present) → Read and follow all rules in `~/.claude/rust/`
+- **Java** (detect: `pom.xml` or `build.gradle` present) → Read and follow all rules in `~/.claude/java/` (coming soon)
+
+When a project matches a language, read that language's `CLAUDE.md` and follow
+all referenced rules, examples, and checklists alongside these global rules.
