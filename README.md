@@ -1,6 +1,4 @@
-# .dotfiles
-
-Personal development environment managed with [GNU Stow](https://www.gnu.org/software/stow/).
+# Personal development environment managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 Configuration for my editor, terminal, and AI-assisted development workflow.
 
