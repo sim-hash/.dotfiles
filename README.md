@@ -15,13 +15,13 @@ Configuration for my editor, terminal, and AI-assisted development workflow.
 The `claude` package provides a layered development methodology for AI-assisted coding:
 
 - **Global rules** (`CLAUDE.md`) - TDD workflow, quality gates, clean code standards, checklists. Applied to every project.
-- **Language-specific guides** - Rust idioms, error handling, testing patterns. More languages coming.
+- **Language-specific guides** - Rust and Java idioms, error handling, testing patterns.
 
 ```
 claude/.claude/
 ├── CLAUDE.md          ← Universal rules (TDD, quality gates, clean code)
 ├── rust/              ← Rust-specific (ownership, clippy, thiserror, etc.)
-└── java/              ← Coming soon
+└── java/              ← Java-specific (Maven/Gradle, JUnit, checkstyle, etc.)
 ```
 
 ## Setup
