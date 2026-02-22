@@ -29,7 +29,8 @@ end, {desc = "Git status"})
 
 vim.keymap.set('n', '<leader>gd', function()
   local base = "origin/main"
-  local files = vim.fn.systemlist("git diff --name-only " .. base)
+  local toplevel = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  local files = vim.fn.systemlist("git -C " .. toplevel .. " diff --name-only " .. base)
   if #files == 0 or (files[1] and files[1]:match("^fatal")) then
     vim.notify("No diff against " .. base, vim.log.levels.INFO)
     return
@@ -53,6 +54,7 @@ vim.keymap.set('n', '<leader>gd', function()
           self.state.bufnr, {
             value = entry.value,
             bufname = self.state.bufname,
+            cwd = toplevel,
             callback = function(bufnr)
               if vim.api.nvim_buf_is_valid(bufnr) then
                 require('telescope.previewers.utils').regex_highlighter(bufnr, "diff")
