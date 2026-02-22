@@ -27,6 +27,34 @@ vim.keymap.set('n', '<leader>fs', function()
 	builtin.git_status({ initial_mode = "normal" })
 end, {desc = "Git status"})
 
+vim.keymap.set('n', '<leader>gd', function()
+  local base = "origin/main"
+  local files = vim.fn.systemlist("git diff --name-only " .. base)
+  if #files == 0 or (files[1] and files[1]:match("^fatal")) then
+    vim.notify("No diff against " .. base, vim.log.levels.INFO)
+    return
+  end
+
+  local actions = require('telescope.actions')
+  local action_state = require('telescope.actions.state')
+
+  require('telescope.pickers').new({}, {
+    prompt_title = "Diff vs " .. base,
+    finder = require('telescope.finders').new_table({ results = files }),
+    sorter = require('telescope.config').values.file_sorter({}),
+    previewer = require('telescope.previewers').git_file_diff.new({}),
+    attach_mappings = function(_, map)
+      map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        vim.cmd("DiffviewOpen " .. base .. " -- " .. entry.value)
+      end)
+      return true
+    end,
+    initial_mode = "normal",
+  }):find()
+end, { desc = "Diff Origin" })
+
 --require('telescope').setup({
 --  defaults = {
 --    path_display = {
