@@ -42,7 +42,26 @@ vim.keymap.set('n', '<leader>gd', function()
     prompt_title = "Diff vs " .. base,
     finder = require('telescope.finders').new_table({ results = files }),
     sorter = require('telescope.config').values.file_sorter({}),
-    previewer = require('telescope.previewers').git_file_diff.new({}),
+    previewer = require('telescope.previewers').new_buffer_previewer({
+      title = "Diff vs " .. base,
+      get_buffer_by_name = function(_, entry)
+        return entry.value
+      end,
+      define_preview = function(self, entry)
+        require('telescope.previewers.utils').job_maker(
+          { "git", "--no-pager", "diff", base, "--", entry.value },
+          self.state.bufnr, {
+            value = entry.value,
+            bufname = self.state.bufname,
+            callback = function(bufnr)
+              if vim.api.nvim_buf_is_valid(bufnr) then
+                require('telescope.previewers.utils').regex_highlighter(bufnr, "diff")
+              end
+            end,
+          }
+        )
+      end,
+    }),
     attach_mappings = function(_, map)
       map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
         local entry = action_state.get_selected_entry()
