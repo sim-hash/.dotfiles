@@ -28,10 +28,11 @@ vim.keymap.set('n', '<leader>fs', function()
 end, {desc = "Git status"})
 
 vim.keymap.set('n', '<leader>gd', function()
+  local git_diff = require('sim-hash.git_diff')
   local base = "origin/main"
-  local toplevel = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-  local files = vim.fn.systemlist("git -C " .. toplevel .. " diff --name-only " .. base)
-  if #files == 0 or (files[1] and files[1]:match("^fatal")) then
+  local toplevel = git_diff.get_toplevel()
+  local files = git_diff.get_diff_files(base, toplevel)
+  if not files then
     vim.notify("No diff against " .. base, vim.log.levels.INFO)
     return
   end
