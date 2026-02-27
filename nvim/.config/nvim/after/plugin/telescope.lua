@@ -31,7 +31,8 @@ vim.keymap.set('n', '<leader>gd', function()
   local git_diff = require('sim-hash.git_diff')
   local base = "origin/main"
   local toplevel = git_diff.get_toplevel()
-  local files = git_diff.get_diff_files(base, toplevel)
+  local author = git_diff.get_git_user(toplevel)
+  local files = git_diff.get_diff_files(base, toplevel, author)
   if not files then
     vim.notify("No diff against " .. base, vim.log.levels.INFO)
     return
@@ -51,7 +52,7 @@ vim.keymap.set('n', '<leader>gd', function()
       end,
       define_preview = function(self, entry)
         require('telescope.previewers.utils').job_maker(
-          { "git", "--no-pager", "diff", base, "--", entry.value },
+          { "git", "--no-pager", "diff", "-U99999", base, "--", entry.value },
           self.state.bufnr, {
             value = entry.value,
             bufname = self.state.bufname,
@@ -69,7 +70,8 @@ vim.keymap.set('n', '<leader>gd', function()
       map({ 'n', 'i' }, '<CR>', function(prompt_bufnr)
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        vim.cmd("DiffviewOpen " .. base .. " -- " .. entry.value)
+        local filepath = toplevel and (toplevel .. "/" .. entry.value) or entry.value
+        vim.cmd("edit " .. filepath)
       end)
       return true
     end,
