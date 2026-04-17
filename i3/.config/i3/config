@@ -42,6 +42,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl --min-val=2 -q set 3%- &&  $refresh_i3status
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl -q set 3%+ &&  $refresh_i3status
 
+# Suspend (sleep)
+bindsym $mod+Shift+z exec --no-startup-id "i3lock && systemctl suspend"
+
 # Screenshot: select region, save to file + copy to clipboard
 bindsym $mod+Shift+s exec --no-startup-id bash -c 'f=~/Pictures/screenshot_$(date +%Y%m%d_%H%M%S).png && maim -s "$f" && xclip -selection clipboard -t image/png < "$f"'
 
